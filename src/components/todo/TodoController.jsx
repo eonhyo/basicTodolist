@@ -21,24 +21,6 @@ const TodoController = () => {
     setSortOrder(nextSortOrder);
   };
 
-  // useEffect(() => {
-  //   if (sortOrder === "asc") {
-  //     // NOTE: 투두 리스트 오름차순 정렬
-  //     setTodos((prevTodos) =>
-  //       [...prevTodos].sort(
-  //         (a, b) => new Date(a.deadline) - new Date(b.deadline)
-  //       )
-  //     );
-
-  //     return;
-  //   }
-
-  //   // NOTE: 투두 리스트 내림차순 정렬
-  //   setTodos((prevTodos) =>
-  //     [...prevTodos].sort((a, b) => new Date(b.deadline) - new Date(a.deadline))
-  //   );
-  // }, [sortOrder, setTodos]);
-
 
   if(isLoading){
     return <div>로딩중입니다.</div>

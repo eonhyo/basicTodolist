@@ -1,10 +1,10 @@
-import { useContext } from "react";
+// import { useContext } from "react";
 import TodoItem from "./TodoItem";
-import { TodoContext } from "../../context/TodoContext";
+// import { TodoContext } from "../../context/TodoContext";
 
 /* eslint-disable react/prop-types */
 const TodoList = ({ headTitle, todos }) => {
-  const { onDeleteTodoItem, onToggleTodoItem } = useContext(TodoContext);
+  // const { onDeleteTodoItem, onToggleTodoItem } = useContext(TodoContext);
 
   return (
     <section>
@@ -14,8 +14,8 @@ const TodoList = ({ headTitle, todos }) => {
           <TodoItem
             key={todo.id}
             todo={todo}
-            onDeleteTodoItem={onDeleteTodoItem}
-            onToggleTodoItem={onToggleTodoItem}
+            // onDeleteTodoItem={onDeleteTodoItem}
+            // onToggleTodoItem={onToggleTodoItem}
           />
         ))}
       </ul>

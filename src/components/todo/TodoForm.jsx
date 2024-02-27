@@ -1,11 +1,19 @@
-/* eslint-disable react/prop-types */
 
-import { useContext } from "react";
-import { TodoContext } from "../../context/TodoContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createTodo } from "../../api/todo-api";
 
 // uncontrolled component
 const TodoForm = () => {
-  const { onSubmitTodo } = useContext(TodoContext);
+  const queryClient = useQueryClient()
+  
+  const {mutate}= useMutation({
+    mutationFn : (nextTodo)=> createTodo(nextTodo),
+    onSuccess : () => {
+      queryClient.invalidateQueries("todos")
+    },
+  })
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,13 +26,15 @@ const TodoForm = () => {
       return;
     }
 
-    onSubmitTodo({
+    const nextTodo = ({
       id: crypto.randomUUID(),
       title,
       content,
       deadline,
       isDone: false,
     });
+
+    mutate(nextTodo);
 
     e.target.reset();
   };

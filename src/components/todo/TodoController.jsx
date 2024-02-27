@@ -1,11 +1,18 @@
-import { useContext, useEffect, useState } from "react";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
-import { TodoContext } from "../../context/TodoContext";
+import { useQuery } from "@tanstack/react-query";
+import { getTodos } from "../../api/todo-api";
+import { useState } from "react";
 
 const TodoController = () => {
+  const {data : todos, isLoading, isError} = useQuery({
+    queryKey : ["todos"],
+    queryFn : getTodos
+  }
+  );
+  console.log(todos)
+
   const [sortOrder, setSortOrder] = useState("asc");
-  const { todos, setTodos } = useContext(TodoContext);
 
   const onChangeSortOrder = (e) => {
     const nextSortOrder = e.target.value;
@@ -14,25 +21,33 @@ const TodoController = () => {
     setSortOrder(nextSortOrder);
   };
 
-  useEffect(() => {
-    if (sortOrder === "asc") {
-      // NOTE: 투두 리스트 오름차순 정렬
-      setTodos((prevTodos) =>
-        [...prevTodos].sort(
-          (a, b) => new Date(a.deadline) - new Date(b.deadline)
-        )
-      );
+  // useEffect(() => {
+  //   if (sortOrder === "asc") {
+  //     // NOTE: 투두 리스트 오름차순 정렬
+  //     setTodos((prevTodos) =>
+  //       [...prevTodos].sort(
+  //         (a, b) => new Date(a.deadline) - new Date(b.deadline)
+  //       )
+  //     );
 
-      return;
-    }
+  //     return;
+  //   }
 
-    // NOTE: 투두 리스트 내림차순 정렬
-    setTodos((prevTodos) =>
-      [...prevTodos].sort((a, b) => new Date(b.deadline) - new Date(a.deadline))
-    );
-  }, [sortOrder, setTodos]);
+  //   // NOTE: 투두 리스트 내림차순 정렬
+  //   setTodos((prevTodos) =>
+  //     [...prevTodos].sort((a, b) => new Date(b.deadline) - new Date(a.deadline))
+  //   );
+  // }, [sortOrder, setTodos]);
 
-  // useMemo
+
+  if(isLoading){
+    return <div>로딩중입니다.</div>
+  }
+
+  if(isError){
+    return <div> 에러가있습니다. 에러 : {isError.message}</div>
+  }
+
   const workingTodos = todos.filter((todo) => !todo.isDone);
   const doneTodos = todos.filter((todo) => todo.isDone);
 
